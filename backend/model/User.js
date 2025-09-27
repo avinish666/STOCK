@@ -1,6 +1,7 @@
-
+// model/User.js
 const mongoose = require("mongoose");
 const UserSchema = require("../schemas/UserSchema");
 
-const User = mongoose.model("User", UserSchema); // ✅ CORRECT
-module.exports = { User };
+const User = mongoose.model("User", UserSchema);
+module.exports = User;  // ✅ export model directly
+

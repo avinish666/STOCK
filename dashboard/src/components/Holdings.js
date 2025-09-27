@@ -16,6 +16,7 @@ const Holdings = () => {
       });
   }, []);
 
+  // Graph labels
   const labels = allHoldings.map((stock) => stock.name);
 
   const data = {
@@ -23,11 +24,24 @@ const Holdings = () => {
     datasets: [
       {
         label: "Stock Price",
-        data: allHoldings.map((stock) => stock.price || 0),
+        data: allHoldings.map((stock) => Number(stock.price) || 0),
         backgroundColor: "rgba(255, 99, 132, 0.5)",
       },
     ],
   };
+
+  // --- 📊 Summary Calculations ---
+  const totalInvestment = allHoldings.reduce(
+    (sum, stock) => sum + (Number(stock.avg) || 0) * (Number(stock.qty) || 0),
+    0
+  );
+  const currentValue = allHoldings.reduce(
+    (sum, stock) => sum + (Number(stock.price) || 0) * (Number(stock.qty) || 0),
+    0
+  );
+  const pnl = currentValue - totalInvestment;
+  const pnlPercent =
+    totalInvestment > 0 ? ((pnl / totalInvestment) * 100).toFixed(2) : 0;
 
   return (
     <>
@@ -50,24 +64,33 @@ const Holdings = () => {
           <tbody>
             {allHoldings.length > 0 ? (
               allHoldings.map((stock) => {
-                const curValue = (stock.price || 0) * (stock.qty || 0);
-                const investment = (stock.avg || 0) * (stock.qty || 0);
-                const isProfit = curValue - investment >= 0.0;
+                const qty = Number(stock.qty) || 0;
+                const avg = Number(stock.avg) || 0;
+                const price = Number(stock.price) || 0;
+
+                const curValue = price * qty;
+                const investment = avg * qty;
+                const pnl = curValue - investment;
+
+                const isProfit = pnl >= 0;
                 const profClass = isProfit ? "profit" : "loss";
-                const dayClass = stock.isLoss ? "loss" : "profit";
+
+                // ✅ Decide profit/loss class from stock.day value
+                const dayClass =
+                  typeof stock.day === "string" && stock.day.startsWith("-")
+                    ? "loss"
+                    : "profit";
 
                 return (
                   <tr key={stock._id}>
-                    <td>{stock.name}</td>
-                    <td>{stock.qty}</td>
-                    <td>{stock.avg !== undefined ? stock.avg.toFixed(2) : "-"}</td>
-                    <td>{stock.price !== undefined ? stock.price.toFixed(2) : "-"}</td>
+                    <td>{stock.name || "-"}</td>
+                    <td>{qty}</td>
+                    <td>{avg ? avg.toFixed(2) : "-"}</td>
+                    <td>{price ? price.toFixed(2) : "-"}</td>
                     <td>{curValue.toFixed(2)}</td>
-                    <td className={profClass}>
-                      {(curValue - investment).toFixed(2)}
-                    </td>
-                    <td className={profClass}>{stock.net}</td>
-                    <td className={dayClass}>{stock.day}</td>
+                    <td className={profClass}>{pnl.toFixed(2)}</td>
+                    <td className={profClass}>{stock.net || "-"}</td>
+                    <td className={dayClass}>{stock.day || "-"}</td>
                   </tr>
                 );
               })
@@ -82,21 +105,24 @@ const Holdings = () => {
         </table>
       </div>
 
+      {/* --- 📊 Dynamic Summary --- */}
       <div className="row">
         <div className="col">
           <h5>
-            29,875.<span>55</span>
+            {totalInvestment.toFixed(2)}
           </h5>
           <p>Total investment</p>
         </div>
         <div className="col">
           <h5>
-            31,428.<span>95</span>
+            {currentValue.toFixed(2)}
           </h5>
           <p>Current value</p>
         </div>
         <div className="col">
-          <h5>1,553.40 (+5.20%)</h5>
+          <h5 className={pnl >= 0 ? "profit" : "loss"}>
+            {pnl.toFixed(2)} ({pnlPercent}%)
+          </h5>
           <p>P&amp;L</p>
         </div>
       </div>
