@@ -1,0 +1,85 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+.signin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.signin-box {
+  background-color: #fff;
+  padding: 40px;
+  width: 380px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.signin-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.signin-box form {
+  display: flex;
+  flex-direction: column;
+}
+
+.signin-box input {
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.signin-box input:focus {
+  outline: none;
+  border-color: #28a745;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+}
+
+.signin-box button {
+  padding: 12px;
+  background-color: #28a745;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.signin-box button:hover {
+  background-color: #218838;
+}
+
+.message {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.message.success {
+  color: #28a745;
+}
+
+.message.error {
+  color: #dc3545;
+}
+
+.signin-box p {
+  text-align: center;
+  margin-top: 15px;
+  color: #555;
+}
+
+.signin-box span {
+  color: #28a745;
+  cursor: pointer;
+  text-decoration: underline;
+}

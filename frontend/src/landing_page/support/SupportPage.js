@@ -5,8 +5,9 @@ import Hero from "./Hero";
 function SupportPage(){
      return(
              <>
-                <CreateTicket/>
+                
                <Hero/>
+               <CreateTicket/>
 
              </>
      );

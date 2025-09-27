@@ -1,0 +1,53 @@
+.username {
+  margin-bottom: 10px;
+}
+
+.username h6 {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 8px 0;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section span p {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.data {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.first h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.first p {
+  margin: 4px 0 0 0;
+  color: gray;
+  font-size: 14px;
+}
+
+.second p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.second span {
+  font-weight: bold;
+}
+
+.profit {
+  color: green;
+}
