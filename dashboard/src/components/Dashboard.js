@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import React from "react";
+import { Route, Routes} from "react-router-dom";
 
 import Apps from "./Apps";
 import Funds from "./Funds";
@@ -11,22 +11,6 @@ import WatchList from "./WatchList";
 import { GeneralContextProvider } from "./GeneralContext";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    // ✅ Extract token from URL on first load
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("token");
-
-    if (token) {
-      localStorage.setItem("token", token); // ✅ Save token
-      // Optional: Clean the URL
-      navigate("/dashboard", { replace: true });
-    } else if (!localStorage.getItem("token")) {
-      // 🔐 No token in URL or localStorage = redirect to login
-      window.location.href = "https://dashboard-8xcp.onrender.com/login";
-    }
-  }, [navigate]);
 
   return (
     <div className="dashboard-container">
