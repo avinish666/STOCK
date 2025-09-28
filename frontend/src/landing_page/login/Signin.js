@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import axios from "axios";
 import "./Signin.css";
@@ -12,17 +11,17 @@ function Signin() {
   const handleSignin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "https://stock-2-2108.onrender.com/api/login",   // ✅ deployed backend
+        { email, password }
+      );
 
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
         setIsSuccess(true);
         setMessage("Login successful! Redirecting...");
         setTimeout(() => {
-          window.location.href = `http://localhost:3001/dashboard?token=${res.data.token}`;
+          window.location.href = `https://dashboard-8xcp.onrender.com/dashboard?token=${res.data.token}`; // ✅ deployed dashboard
         }, 1000);
       } else {
         setIsSuccess(false);
@@ -62,7 +61,11 @@ function Signin() {
         )}
         <p>
           Don’t have an account?{" "}
-          <span onClick={() => (window.location.href = "/signup")}>
+          <span
+            onClick={() =>
+              (window.location.href = "https://stockk-opwe.onrender.com/signup") // ✅ deployed signup page
+            }
+          >
             Sign Up
           </span>
         </p>

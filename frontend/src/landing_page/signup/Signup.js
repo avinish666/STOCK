@@ -1,4 +1,3 @@
-// Signup.js
 import React, { useState } from "react";
 import axios from "axios";
 import "./Signup.css";
@@ -11,13 +10,13 @@ function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/signup", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "https://stock-2-2108.onrender.com/api/signup",  // ✅ deployed backend
+        { email, password }
+      );
 
-      // redirect to login page (cross-app)
-      window.location.href = "http://localhost:3000/login";
+      // ✅ redirect to deployed frontend login
+      window.location.href = "https://stockk-opwe.onrender.com/login";
     } catch (err) {
       setMessage(err.response?.data?.message || "Signup failed!");
     }
@@ -47,7 +46,11 @@ function Signup() {
         {message && <p className="message">{message}</p>}
         <p className="redirect">
           Already have an account?{" "}
-          <span onClick={() => (window.location.href = "http://localhost:3000/login")}>
+          <span
+            onClick={() =>
+              (window.location.href = "https://stockk-opwe.onrender.com/login")
+            }
+          >
             Sign In
           </span>
         </p>
