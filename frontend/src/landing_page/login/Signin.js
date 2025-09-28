@@ -21,7 +21,7 @@ function Signin() {
         setIsSuccess(true);
         setMessage("Login successful! Redirecting...");
         setTimeout(() => {
-          window.location.href = `https://dashboard-8xcp.onrender.com/dashboard?token=${res.data.token}`; // ✅ deployed dashboard
+          window.location.href = `https://dashboard-8xcp.onrender.com/?token=${res.data.token}`; // ✅ deployed dashboard
         }, 1000);
       } else {
         setIsSuccess(false);
