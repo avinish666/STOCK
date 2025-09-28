@@ -26,7 +26,8 @@ function Signin() {
         setMessage("Login successful! Redirecting...");
 
         setTimeout(() => {
-          window.location.href = "https://dashboard-8xcp.onrender.com/dashboard"; // ✅ no token in URL
+          const token = res.data.token;
+          window.location.href = `https://stockk-opwe.onrender.com/dashboard?token=${token}`;
         }, 1500);
       } else {
         setIsSuccess(false);
