@@ -22,7 +22,7 @@ function Signin() {
         setIsSuccess(true);
         setMessage("Login successful! Redirecting...");
         setTimeout(() => {
-          window.location.href = `http://localhost:3002/dashboard?token=${res.data.token}`;
+          window.location.href = `http://localhost:3001/dashboard?token=${res.data.token}`;
         }, 1000);
       } else {
         setIsSuccess(false);
