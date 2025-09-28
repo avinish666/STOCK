@@ -24,11 +24,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
 const app = express();
 const allowedOrigins = [
   "https://stockk-opwe.onrender.com",
-  "https://dashboard-8xcp.onrender.com",
-  "http://localhost:3000",
-  "http://localhost:3001",
-  "http://192.168.43.16:3000",
-  "http://192.168.43.16:3001"
+  "https://dashboard-8xcp.onrender.com"
 ];
 
 app.use(cors({

@@ -6,19 +6,28 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
     try {
       const res = await axios.post(
-        "https://stock-2-2108.onrender.com/api/signup",  // ✅ deployed backend
+        "https://stock-2-2108.onrender.com/api/signup", // ✅ your backend
         { email, password }
       );
 
-      // ✅ redirect to deployed frontend login
-      window.location.href = "https://stockk-opwe.onrender.com/login";
+      // ✅ Success: Show message then redirect to login page (frontend)
+      setMessage("Signup successful! Redirecting to login...");
+      setTimeout(() => {
+        window.location.href = "https://dashboard-8xcp.onrender.com/login"; // ✅ correct frontend URL
+      }, 1500);
     } catch (err) {
       setMessage(err.response?.data?.message || "Signup failed!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -41,14 +50,16 @@ function Signup() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit">Sign Up</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Signing up..." : "Sign Up"}
+          </button>
         </form>
         {message && <p className="message">{message}</p>}
         <p className="redirect">
           Already have an account?{" "}
           <span
             onClick={() =>
-              (window.location.href = "https://stockk-opwe.onrender.com/login")
+              (window.location.href = "https://dashboard-8xcp.onrender.com/login")
             }
           >
             Sign In
