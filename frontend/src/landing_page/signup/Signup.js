@@ -22,7 +22,7 @@ function Signup() {
       // ✅ Success: Show message then redirect to login page (frontend)
       setMessage("Signup successful! Redirecting to login...");
       setTimeout(() => {
-        window.location.href = "https://dashboard-8xcp.onrender.com/login"; // ✅ correct frontend URL
+        window.location.href = "https://dashboard-8xcp.onrender.com/api/login"; // ✅ correct frontend URL
       }, 1500);
     } catch (err) {
       setMessage(err.response?.data?.message || "Signup failed!");
@@ -59,7 +59,7 @@ function Signup() {
           Already have an account?{" "}
           <span
             onClick={() =>
-              (window.location.href = "https://dashboard-8xcp.onrender.com/login")
+              (window.location.href = "https://stock-2-2108.onrender.com/api/login")
             }
           >
             Sign In

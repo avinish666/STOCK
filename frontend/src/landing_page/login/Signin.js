@@ -27,7 +27,7 @@ function Signin() {
 
         setTimeout(() => {
           const token = res.data.token;
-          window.location.href = `https://stockk-opwe.onrender.com/dashboard?token=${token}`;
+          window.location.href = `https://stockk-opwe.onrender.com?token=${token}`;
         }, 1500);
       } else {
         setIsSuccess(false);
@@ -75,7 +75,7 @@ function Signin() {
           Don’t have an account?{" "}
           <span
             onClick={() =>
-              (window.location.href = "https://dashboard-8xcp.onrender.com/signup")
+              (window.location.href = "https://stock-2-2108.onrender.com/api/signup")
             }
           >
             Sign Up
