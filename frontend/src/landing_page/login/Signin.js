@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";  // <-- import useNavigate
 import "./Signin.css";
 
 function Signin() {
@@ -8,6 +9,8 @@ function Signin() {
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate(); // <-- get navigate function
 
   const handleSignin = async (e) => {
     e.preventDefault();
@@ -27,8 +30,8 @@ function Signin() {
         setMessage("Login successful! Redirecting...");
 
         setTimeout(() => {
-          // Redirect to dashboard with token in query param
-          window.location.href = `https://dashboard-8xcp.onrender.com?token=${token}`;
+          // Redirect to dashboard with token in query param using React Router
+          navigate(`https://dashboard-8xcp.onrender.com/?token=${token}`); // Use relative path here
         }, 1500);
       } else {
         setIsSuccess(false);
@@ -76,9 +79,7 @@ function Signin() {
           Don’t have an account?{" "}
           <span
             style={{ color: "blue", cursor: "pointer" }}
-            onClick={() =>
-              (window.location.href = "https://stockk-opwe.onrender.com/signup")
-            }
+            onClick={() => navigate("/signup")} // <-- use navigate here
           >
             Sign Up
           </span>

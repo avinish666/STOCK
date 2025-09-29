@@ -1,6 +1,6 @@
-
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./Signup.css";
 
 function Signup() {
@@ -8,6 +8,7 @@ function Signup() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -20,10 +21,14 @@ function Signup() {
         { email, password }
       );
 
-      setMessage("Signup successful! Redirecting to login...");
-      setTimeout(() => {
-        window.location.href = "https://stockk-opwe.onrender.com/login";
-      }, 1500);
+      if (res.data.success) {
+        setMessage("Signup successful! Redirecting to login...");
+        setTimeout(() => {
+          navigate("/login");
+        }, 1500);
+      } else {
+        setMessage(res.data.message || "Signup failed!");
+      }
     } catch (err) {
       setMessage(err.response?.data?.message || "Signup failed!");
     } finally {
@@ -59,9 +64,7 @@ function Signup() {
           Already have an account?{" "}
           <span
             style={{ color: "blue", cursor: "pointer" }}
-            onClick={() =>
-              (window.location.href = "https://stockk-opwe.onrender.com/login")
-            }
+            onClick={() => navigate("/login")}
           >
             Sign In
           </span>
