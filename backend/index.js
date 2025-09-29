@@ -10,7 +10,6 @@ const { PositionsModel } = require("./model/PositionsModel");
 const { OrdersModel } = require("./model/OrdersModel");
 
 const authRoutes = require("./routes/auth");
-const protectedRoutes = require("./routes/protected");
 
 const PORT = process.env.PORT || 5000;
 const uri = process.env.MONGODB_URL;
@@ -30,7 +29,6 @@ app.use(cors({
 app.use(express.json());
 
 app.use("/api", authRoutes);
-app.use("/api", protectedRoutes);
 
 // Add holdings route with proper async handling
 app.get("/addHoldings", async (req, res) => {
