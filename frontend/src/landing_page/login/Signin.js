@@ -29,10 +29,11 @@ function Signin() {
         setIsSuccess(true);
         setMessage("Login successful! Redirecting...");
 
-        setTimeout(() => {
-          // Redirect to dashboard with token in query param using React Router
-          navigate(`https://dashboard-8xcp.onrender.com/?token=${token}`); // Use relative path here
-        }, 1500);
+       setTimeout(() => {
+  // ✅ Use window.location.href for external app redirection
+  window.location.href = `https://dashboard-8xcp.onrender.com/?token=${token}`;
+}, 1500);
+
       } else {
         setIsSuccess(false);
         setMessage(res.data.message || "Login failed");
