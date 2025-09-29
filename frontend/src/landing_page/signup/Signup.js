@@ -22,7 +22,7 @@ function Signup() {
 
       setMessage("Signup successful! Redirecting to login...");
       setTimeout(() => {
-        window.location.href = "https://stockk-opwe.onrender.com/signin";
+        window.location.href = "https://stockk-opwe.onrender.com/login";
       }, 1500);
     } catch (err) {
       setMessage(err.response?.data?.message || "Signup failed!");
@@ -60,7 +60,7 @@ function Signup() {
           <span
             style={{ color: "blue", cursor: "pointer" }}
             onClick={() =>
-              (window.location.href = "https://stockk-opwe.onrender.com/signin")
+              (window.location.href = "https://stockk-opwe.onrender.com/login")
             }
           >
             Sign In
