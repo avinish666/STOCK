@@ -16,18 +16,19 @@ function Signin() {
 
     try {
       const res = await axios.post(
-        "https://stock-2-2108.onrender.com/api/login", // ✅ deployed backend
+        "https://stock-2-2108.onrender.com/api/login", // Backend login endpoint
         { email, password }
       );
 
       if (res.data.success) {
-        localStorage.setItem("token", res.data.token);
+        const token = res.data.token;
+        localStorage.setItem("token", token);
         setIsSuccess(true);
         setMessage("Login successful! Redirecting...");
 
         setTimeout(() => {
-          const token = res.data.token;
-          window.location.href = `https://stockk-opwe.onrender.com?token=${token}`;
+          // Redirect to dashboard with token in query param
+          window.location.href = `https://dashboard-8xcp.onrender.com?token=${token}`;
         }, 1500);
       } else {
         setIsSuccess(false);
@@ -74,8 +75,9 @@ function Signin() {
         <p className="redirect">
           Don’t have an account?{" "}
           <span
+            style={{ color: "blue", cursor: "pointer" }}
             onClick={() =>
-              (window.location.href = "https://stock-2-2108.onrender.com/api/signup")
+              (window.location.href = "https://stockk-opwe.onrender.com/signup")
             }
           >
             Sign Up

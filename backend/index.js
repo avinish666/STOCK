@@ -2,30 +2,24 @@ require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-
 const cors = require("cors");
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const dotenv = require("dotenv");
-const {User} = require("./model/User");
+const User = require("./model/User");
 
 const { HoldingsModel } = require("./model/HoldingsModel");
-
 const { PositionsModel } = require("./model/PositionsModel");
 const { OrdersModel } = require("./model/OrdersModel");
-const authRoutes = require("./routes/auth");
 
+const authRoutes = require("./routes/auth");
+const protectedRoutes = require("./routes/protected");
 
 const PORT = process.env.PORT || 5000;
 const uri = process.env.MONGODB_URL;
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret';
-
-const app = express();
 const allowedOrigins = [
   "https://stockk-opwe.onrender.com",
   "https://dashboard-8xcp.onrender.com"
 ];
+
+const app = express();
 
 app.use(cors({
   origin: allowedOrigins,
@@ -33,12 +27,14 @@ app.use(cors({
   credentials: true
 }));
 
+app.use(express.json());
 
-
-app.use(express.json()); // ✅ Correct way to parse JSON
 app.use("/api", authRoutes);
+app.use("/api", protectedRoutes);
+
+// Add holdings route with proper async handling
 app.get("/addHoldings", async (req, res) => {
-  let tempHoldings = [
+  const tempHoldings = [
     {
       name: "BHARTIARTL",
       qty: 2,
@@ -150,23 +146,29 @@ app.get("/addHoldings", async (req, res) => {
     },
   ];
 
-  tempHoldings.forEach((item) => {
-    let newHolding = new HoldingsModel({
-      name: item.name,
-      qty: item.qty,
-      avg: item.avg,
-      price: item.price,
-      net: item.day,
-      day: item.day,
-    });
-
-    newHolding.save();
-  });
-  res.send("Done!");
+  try {
+    for (const item of tempHoldings) {
+      const newHolding = new HoldingsModel({
+        name: item.name,
+        qty: item.qty,
+        avg: item.avg,
+        price: item.price,
+        net: item.net,
+        day: item.day,
+        isLoss: item.isLoss || false
+      });
+      await newHolding.save();
+    }
+    res.send("Done!");
+  } catch (error) {
+    console.error("Error adding holdings:", error);
+    res.status(500).send("Failed to add holdings");
+  }
 });
 
+// Add positions route with proper async handling
 app.get("/addPositions", async (req, res) => {
-  let tempPositions = [
+  const tempPositions = [
     {
       product: "CNC",
       name: "EVEREADY",
@@ -189,58 +191,80 @@ app.get("/addPositions", async (req, res) => {
     },
   ];
 
-  tempPositions.forEach((item) => {
-    let newPosition = new PositionsModel({
-      product: item.product,
-      name: item.name,
-      qty: item.qty,
-      avg: item.avg,
-      price: item.price,
-      net: item.net,
-      day: item.day,
-      isLoss: item.isLoss,
+  try {
+    for (const item of tempPositions) {
+      const newPosition = new PositionsModel({
+        product: item.product,
+        name: item.name,
+        qty: item.qty,
+        avg: item.avg,
+        price: item.price,
+        net: item.net,
+        day: item.day,
+        isLoss: item.isLoss || false,
+      });
+      await newPosition.save();
+    }
+    res.send("Done!");
+  } catch (error) {
+    console.error("Error adding positions:", error);
+    res.status(500).send("Failed to add positions");
+  }
+});
+
+// Fetch all holdings
+app.get("/allHoldings", async (req, res) => {
+  try {
+    const allHoldings = await HoldingsModel.find({});
+    res.json(allHoldings);
+  } catch (error) {
+    console.error("Error fetching holdings:", error);
+    res.status(500).send("Failed to fetch holdings");
+  }
+});
+
+// Fetch all positions
+app.get("/allPositions", async (req, res) => {
+  try {
+    const allPositions = await PositionsModel.find({});
+    res.json(allPositions);
+  } catch (error) {
+    console.error("Error fetching positions:", error);
+    res.status(500).send("Failed to fetch positions");
+  }
+});
+
+// Create new order with error handling
+app.post("/newOrder", async (req, res) => {
+  try {
+    const newOrder = new OrdersModel({
+      name: req.body.name,
+      qty: req.body.qty,
+      price: req.body.price,
+      mode: req.body.mode,
     });
 
-    newPosition.save();
-  });
-  res.send("Done!");
+    await newOrder.save();
+    res.send("Order saved!");
+  } catch (error) {
+    console.error("Error saving order:", error);
+    res.status(500).send("Failed to save order");
+  }
 });
 
-app.get("/allHoldings", async (req, res) => {
-  let allHoldings = await HoldingsModel.find({});
-  res.json(allHoldings);
+app.get("/", (req, res) => {
+  res.send("Backend is running 🚀");
 });
 
-app.get("/allPositions", async (req, res) => {
-  let allPositions = await PositionsModel.find({});
-  res.json(allPositions);
-});
-
-app.post("/newOrder", async (req, res) => {
-  let newOrder = new OrdersModel({
-    name: req.body.name,
-    qty: req.body.qty,
-    price: req.body.price,
-    mode: req.body.mode,
-  });
-
-  newOrder.save();
-
-  res.send("Order saved!");
-});
-
-
-app.get('/', (req, res) => {
-  res.send('Backend is running 🚀');
-});
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("DB connected!");
-    app.listen(PORT, '0.0.0.0', () => {
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(`App started on port ${PORT}!`);
     });
   })
-  .catch(err => {
+  .catch((err) => {
     console.error("DB connection error:", err);
   });
+
 

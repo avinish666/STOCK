@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import axios from "axios";
 import "./Signup.css";
@@ -15,14 +16,13 @@ function Signup() {
 
     try {
       const res = await axios.post(
-        "https://stock-2-2108.onrender.com/api/signup", // ✅ your backend
+        "https://stock-2-2108.onrender.com/api/signup",
         { email, password }
       );
 
-      // ✅ Success: Show message then redirect to login page (frontend)
       setMessage("Signup successful! Redirecting to login...");
       setTimeout(() => {
-        window.location.href = "https://dashboard-8xcp.onrender.com/api/login"; // ✅ correct frontend URL
+        window.location.href = "https://stockk-opwe.onrender.com/signin";
       }, 1500);
     } catch (err) {
       setMessage(err.response?.data?.message || "Signup failed!");
@@ -58,8 +58,9 @@ function Signup() {
         <p className="redirect">
           Already have an account?{" "}
           <span
+            style={{ color: "blue", cursor: "pointer" }}
             onClick={() =>
-              (window.location.href = "https://stock-2-2108.onrender.com/api/login")
+              (window.location.href = "https://stockk-opwe.onrender.com/signin")
             }
           >
             Sign In
